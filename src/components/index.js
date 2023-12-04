@@ -8,7 +8,6 @@ const cardsContainer = document.querySelector('.places__list');
 const imageModal = document.querySelector('.popup_type_image');
 const popupImage = document.querySelector('.popup__image');
 const popupCaption = document.querySelector('.popup__caption');
-const imageModalClose = imageModal.querySelector('.popup__close');
 const editButton = document.querySelector('.profile__edit-button');
 const modalEdit = document.querySelector('.popup_type_edit');
 const formElementEditProfile = document.forms['edit-profile'];
@@ -18,7 +17,6 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const addCardButton = document.querySelector('.profile__add-button');
 const modalAddCard = document.querySelector('.popup_type_new-card');
-const modalCloseButtonEdit = modalEdit.querySelector('.popup__close');
 const formElementNewCard = document.forms[1];
 const placeNameInput = formElementNewCard.querySelector('.popup__input_type_card-name');
 const linkInput = formElementNewCard.elements.link;
@@ -33,10 +31,6 @@ function openImagePopup (evt) {
     popupCaption.textContent = evt.target.alt;
     openModal(imageModal);
 }
-
-imageModalClose.addEventListener('click', function(){
-    closeModal(imageModal);
-});
 
 function addCards() {
     initialCards.forEach(function (item) {
@@ -53,7 +47,7 @@ editButton.addEventListener('click', function(){
     openModal(modalEdit);
 });
 
-function ProfileEditFormSubmit(evt) {
+function profileEditFormSubmit(evt) {
     evt.preventDefault();
     profileTitle.textContent = nameInput.value;
     profileDescription.textContent = jobInput.value;
@@ -61,20 +55,16 @@ function ProfileEditFormSubmit(evt) {
     closeModal(modalEdit);
     formElementEditProfile.reset();
 }
-formElementEditProfile.addEventListener('submit', ProfileEditFormSubmit);
+formElementEditProfile.addEventListener('submit', profileEditFormSubmit);
 
 addCardButton.addEventListener('click', function(){
     openModal(modalAddCard);
 });
 
-modalCloseButtonEdit.addEventListener('click', function(){
-    closeModal(modalEdit);
-});
-
-const modalCloseButtonAdd = modalAddCard.querySelector('.popup__close');
-modalCloseButtonAdd.addEventListener('click', function(){
-    closeModal(modalAddCard);
-});
+document.querySelectorAll('.popup__close').forEach(button => {
+    const buttonsPopup = button.closest('.popup');
+    button.addEventListener('click', () => closeModal(buttonsPopup));
+});  
 
 function handleNewCardFormSubmit(evt) {
     evt.preventDefault();

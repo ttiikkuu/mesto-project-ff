@@ -1,18 +1,19 @@
 export const openModal = function(modalType) {
   modalType.classList.add('popup_is-opened');
   document.addEventListener('keydown', closePopupEscape);
-  document.addEventListener('click', closePopupOverlay);
+  modalType.addEventListener('click', closePopupOverlay);
 }
 
 export const closeModal = function(modalType) {
   modalType.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', closePopupEscape);
-  document.removeEventListener('click', closePopupOverlay);
+  modalType.removeEventListener('click', closePopupOverlay);
 }
 
 const closePopupEscape = function(evt) {
-  if (evt.keyCode === 27) {
-    document.querySelector('.popup_is-opened').classList.remove('popup_is-opened');
+  if (evt.key === 'Escape') {
+    const openedModal = document.querySelector('.popup_is-opened');
+    closeModal(openedModal);
   }
 }
 
