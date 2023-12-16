@@ -22,5 +22,3 @@ const closePopupOverlay = function(evt) {
     evt.target.classList.remove('popup_is-opened');
   }
 }
-
-
