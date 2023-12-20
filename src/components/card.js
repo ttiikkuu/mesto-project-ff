@@ -1,8 +1,8 @@
-import { getUser, deleteCardApi, deleteLike, AddLike } from './api.js'
+import { getUser, deleteCardApi, deleteLike, addLike } from './api.js'
 
-export function createCard(item, deleteCard, like, openImagePopup) {
+const cardTemplate = document.querySelector('#card-template').content;
 
-    const cardTemplate = document.querySelector('#card-template').content;
+export function createCard(item, deleteCard, like, openImagePopup, userId) {
 
     const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
     cardElement.id = item._id;
@@ -13,19 +13,15 @@ export function createCard(item, deleteCard, like, openImagePopup) {
 
     cardImage.addEventListener('click', openImagePopup);
 
-    getUser()
-    .then((data) => {
-      const userId = data._id;
-      if (item.owner._id !== userId) {
-        deleteButton.style.display = 'none';
+
+    if (item.owner._id !== userId) {
+        deleteButton.remove();
     }
+
     if (item.likes.some((el) => el._id == userId)) {
         likeCard.classList.add('card__like-button_is-active');
     }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+
 
     cardImage.src = item.link;
     cardImage.alt = item.name;
@@ -43,8 +39,7 @@ export function deleteCard(evt) {
     const elementCard = evt.target.closest(".card");
     deleteCardApi(elementCard.id)
     .then(() => {
-        const card = evt.target.closest('.card');
-        card.remove();
+      elementCard.remove();
     })
     .catch((err) => {
         console.log(err);
@@ -62,7 +57,7 @@ export const like = (evt) => {
       })
       .catch((err) => {`Ошибка удаления лайка: ${err}`});
     } else {
-      AddLike(cardLikeId.id)
+      addLike(cardLikeId.id)
       .then((res) => {
         evt.target.classList.add('card__like-button_is-active');
         counterLikes.textContent = res.likes.length;

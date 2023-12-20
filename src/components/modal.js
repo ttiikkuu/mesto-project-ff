@@ -19,6 +19,6 @@ const closePopupEscape = function(evt) {
 
 const closePopupOverlay = function(evt) {
   if (evt.target === evt.target) {
-    evt.target.classList.remove('popup_is-opened');
+    closeModal(evt.target);
   }
 }
