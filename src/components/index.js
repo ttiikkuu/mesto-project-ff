@@ -150,6 +150,11 @@ const validationConfig = {
 
 enableValidation(validationConfig);
 
+const createCardFromSubmit = (userId) => {
+  formElementNewCard.addEventListener('submit', evt => handleNewCardFormSubmit(evt, userId));
+}
+
+
 Promise.all([getUser(), getCards()])
   .then(([userData, cards]) => {
     profileTitle.textContent = userData.name;
@@ -157,7 +162,7 @@ Promise.all([getUser(), getCards()])
     profileImage.style.backgroundImage = `url('${userData.avatar}')`;
     const userId = userData._id
     addCards(cards, userId);
-    formElementNewCard.addEventListener('submit', evt => handleNewCardFormSubmit(evt, userId));
+    createCardFromSubmit(userId);
   })
   .catch((err) => {
     console.log(`Ошибка: ${err}`);
